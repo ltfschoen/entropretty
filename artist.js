@@ -128,6 +128,7 @@ const DESIGNS = [
     'circlebarb.js',
     'circles.js',
     'datetime.js',
+    'exorcism.js',
     'dial.js',
     'kins.js',
     'lemonjelly.js',
