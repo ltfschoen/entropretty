@@ -6,12 +6,14 @@ Try it at https://gavofyork.github.io/entropretty/.
 
 <img width="735" alt="image" src="https://github.com/user-attachments/assets/9faef5a2-12ad-4599-b75d-a923e6594f09">
 
-## Usage
+## Usage (with Live Reload)
+
+Automatically monitors your design files for saved changes and refreshes the webpage when a modification is detected.
 
 ```sh
 npm install
 npm run bundle
-npm start
+npm run watch
 ```
 
 ## Playing around
