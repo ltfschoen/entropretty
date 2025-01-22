@@ -14,6 +14,12 @@ npm run bundle
 npm start
 ```
 
+## Live Reload
+
+```sh
+npm run watch
+```
+
 ## Tests
 
 ```sh
