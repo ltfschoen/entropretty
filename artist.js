@@ -140,7 +140,7 @@ const DESIGNS = [
     'sprite.js',
     'squares.js',
     'star.js',
-    'mydesign',
+    'example',
 ];
 
 async function checkExists(importPath) {
