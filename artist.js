@@ -140,7 +140,7 @@ const DESIGNS = [
     'sprite.js',
     'squares.js',
     'star.js',
-    'x/x.js'
+    'x'
 ];
 
 // async function checkExists(path) {
@@ -152,32 +152,39 @@ const DESIGNS = [
 //     }
 // }
 
-console.log('xxx', DESIGNS.length)
-let currDesign = DESIGNS[17]
+// console.log('xxx', DESIGNS.length)
+// let currDesign = DESIGNS[17]
+// let importPath;
+// console.log('currDesign-a', currDesign)
+// try {
+//     console.log('currDesign-b', currDesign)
+
+//     let a = await import(`./designs/${currDesign}`);
+//     console.log('a', typeof a)
+// } catch(e) {
+//     console.log('currDesign-c', currDesign)
+//     importPath = `./designs/${currDesign.slice(0, -3)}/${currDesign}`;
+//     // checkExists(importPath);
+//     console.log('importPath: ', importPath)
+
+//     // let b = (await import(importPath)).schema;
+//     let b = (await import(importPath));
+//     console.log('b', typeof b)
+// }
+
 let importPath;
-console.log('currDesign-a', currDesign)
-try {
-    console.log('currDesign-b', currDesign)
-
-    let a = await import(`./designs/${currDesign}`);
-    console.log('a', typeof a)
-} catch(e) {
-    console.log('currDesign-c', currDesign)
-    importPath = `./designs/${currDesign.slice(0, -3)}/${currDesign}`;
-    // checkExists(importPath);
-    console.log('importPath: ', importPath)
-
-    // let b = (await import(importPath)).schema;
-    let b = (await import(importPath));
-    console.log('b', typeof b)
-}
-
-
 let schema;
+console.log('DESIGNS.sort(): ', DESIGNS.sort())
 for (let d in DESIGNS.sort()) {
     importPath = `./designs/${DESIGNS[d]}`;
     console.log('importPath: ', importPath)
-    schema = (await import(importPath)).schema;
+    if (importPath.slice(-3) == ".js") {
+        schema = (await import(importPath)).schema;
+    } else {
+        importPath = importPath + '/index.js';
+        schema = (await import(importPath)).schema;
+    }
+
     console.log('schema: ', schema);
     addSchema(schema, d);
 }

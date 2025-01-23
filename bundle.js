@@ -13,11 +13,21 @@ var next = function (dir, subFolderName, list, i, done) {
   var file = list[i++];
 
   if (!file) {
+      console.log('DONE')
       return done(null);
   }
   
   console.log('dir1: ', dir)
   console.log('file1: ', file)
+
+
+
+  console.log('walkPath: ', walkPath)
+  const walkPathLength = walkPath.length;
+  console.log('walkPathLength: ', walkPathLength);
+  var subFolderName = dir.slice(walkPathLength + 1);
+  console.log('subFolderName Q: ', subFolderName)
+
   console.log('subFolderName: ', subFolderName)
 
   file = dir + '/' + file;
@@ -30,8 +40,13 @@ var next = function (dir, subFolderName, list, i, done) {
 
       if (stat && stat.isDirectory()) {
 
-          var subFolderName = file.slice(file.lastIndexOf('/')+1)
-          console.log('subFolderName: ', subFolderName)
+          // var subFolderName = file.slice(file.lastIndexOf('/')+1)
+          // console.log('subFolderName z: ', subFolderName)
+
+          const dirLength = dir.length;
+          var subFolderName = file.slice(dirLength + 1);
+          console.log('subFolderName z: ', subFolderName)
+
 
           walk(file, subFolderName, function (error) {
               // rollup -i ./designs/$(dir)/$(file).js -o out/$(dir)/$(basename $(file)) -f es -p 'terser={mangle: {reserved: [\"draw\"]}}';
@@ -77,6 +92,7 @@ var walk = function (dir, subFolderName, done) {
         }
 
         var i = 0;
+        console.log('list: ', list)
         next(dir, subFolderName, list, i, done);
     });
 };
