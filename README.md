@@ -16,6 +16,13 @@ npm run bundle
 npm run watch
 ```
 
+## Tests
+
+```sh
+npm install
+npm run test
+```
+
 ## Playing around
 
 ### Option 1: Create design file
