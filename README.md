@@ -13,7 +13,7 @@ Automatically monitors your design files for saved changes and refreshes the web
 ```sh
 npm install
 npm run bundle
-npm run watch
+npm start
 ```
 
 ## Tests
