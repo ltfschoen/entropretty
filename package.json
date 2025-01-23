@@ -2,9 +2,9 @@
   "name": "entropretty",
   "type": "module",
   "scripts": {
+    "clean": "rm -rf ./out",
     "build": "npm run bundle",
-    "go": "node bundle.js",
-    "bundle": "for file in ./designs/*.js; do rollup -i $file -o out/$(basename $file) -f es -p 'terser={mangle: {reserved: [\"draw\"]}}'; rollup -i ./designs/x/x.js -o out/x/$(basename x.js) -f es -p 'terser={mangle: {reserved: [\"draw\"]}}'; done; for dir in ./designs/*/; do for file in dir; do rollup -i ./designs/$(dir)/$(file).js -o out/$(dir)/$(basename $(file)) -f es -p 'terser={mangle: {reserved: [\"draw\"]}}'; done done",
+    "bundle": "npm run clean && node bundle.js",
     "start": "npx serve .",
     "watch": "npm run start | ./node_modules/.bin/livereload -d -f '**/*.js' ./"
   },

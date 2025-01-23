@@ -140,52 +140,29 @@ const DESIGNS = [
     'sprite.js',
     'squares.js',
     'star.js',
-    'x'
+    'mydesign'
 ];
 
-// async function checkExists(path) {
-//     try {
-//     //   await fs.access(path);
-//       console.log('The file or directory exists.');
-//     } catch {
-//       console.log('The file or directory does not exist.');
-//     }
-// }
-
-// console.log('xxx', DESIGNS.length)
-// let currDesign = DESIGNS[17]
-// let importPath;
-// console.log('currDesign-a', currDesign)
-// try {
-//     console.log('currDesign-b', currDesign)
-
-//     let a = await import(`./designs/${currDesign}`);
-//     console.log('a', typeof a)
-// } catch(e) {
-//     console.log('currDesign-c', currDesign)
-//     importPath = `./designs/${currDesign.slice(0, -3)}/${currDesign}`;
-//     // checkExists(importPath);
-//     console.log('importPath: ', importPath)
-
-//     // let b = (await import(importPath)).schema;
-//     let b = (await import(importPath));
-//     console.log('b', typeof b)
-// }
+async function checkExists(importPath) {
+    try {
+        await import(importPath).schema;
+    } catch {
+        throw 'The file or directory does not exist.'
+    }
+}
 
 let importPath;
 let schema;
-console.log('DESIGNS.sort(): ', DESIGNS.sort())
+
 for (let d in DESIGNS.sort()) {
     importPath = `./designs/${DESIGNS[d]}`;
-    console.log('importPath: ', importPath)
     if (importPath.slice(-3) == ".js") {
         schema = (await import(importPath)).schema;
     } else {
         importPath = importPath + '/index.js';
+        checkExists(importPath);
         schema = (await import(importPath)).schema;
     }
-
-    console.log('schema: ', schema);
     addSchema(schema, d);
 }
 postMessage({ op: 'initialized' });
