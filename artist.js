@@ -34,6 +34,10 @@ function captionThumb(draw) {
     return canvas.transferToImageBitmap();
 }
 
+function padWithLeadingZeros(num, totalPadLength) {
+    return String(num).padStart(totalPadLength, '0');
+}
+
 onmessage = async function(e) {
     if (e.data.op == 'render') {
         let { schemaName, note, seed, width, height } = e.data;
@@ -53,6 +57,36 @@ onmessage = async function(e) {
         };
         let blob = await canvas.convertToBlob(options);
         postMessage({ op: 'renderedSvg', note, blob, seed, width, height });
+    } else if (e.data.op == 'renderSvgAnimation') {
+        let { schemaName, note, seeds, index, width, height } = e.data;
+        let schema = schemas[schemaName];
+        let canvas = new OffscreenCanvas(width, height);
+        let blob, blobObj, schemaPrefix;
+        let blobs = [];
+        let idx = 0;
+        let regExp = /[^a-z]/g;
+        for (let x = 0; x <= 7; x++) {
+            for (let y = 0; y <= 15; y++) {
+                drawItem(canvas.getContext('2d'), schema, seeds[x][y], width, height);
+                const options = {
+                    quality: 1.0,
+                    type: "image/svg+xml",
+                };
+                // Name blobs to be exported as SVG files as a sequence to allow
+                // them to be imported as an animation into LaserCube
+                // https://youtu.be/qUOSxFva-fA?feature=shared&t=18
+                const totalPadLength = 4;
+                blob = await canvas.convertToBlob(options);
+                schemaPrefix = schema.name.toLowerCase().replace(regExp, '');
+                blobObj = {
+                    name: `${schemaPrefix}-${padWithLeadingZeros(idx, totalPadLength)}.svg`,
+                    blob: blob
+                }
+                blobs.push(blobObj);
+                idx++
+            }
+        }
+        postMessage({ op: 'renderedSvgAnimations', note, blobs, seeds, index, schemaPrefix, width, height });
     } else if (e.data.op == 'updateCustom') {
         try {
             let d = eval(e.data.code);
@@ -129,7 +163,7 @@ function addSchema(schema, id) {
         let caption = schema.caption ? captionThumb(schema.caption) : null;
         let message = { op: 'addSchema', id, thumb: thumb(schema.draw), name: schema.name, artist: schema.artist, caption };
         postMessage(message);
-        schemas[id] = { draw: schema.draw };
+        schemas[id] = { draw: schema.draw, name: schema.name };
     }
 }
 
